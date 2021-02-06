@@ -1,5 +1,7 @@
 ```This repository is created for learning purpose```
+
 ```This is deployable flask project```
+
 ```Started on 6th Feb 2021```
 
 # Blog Manager
