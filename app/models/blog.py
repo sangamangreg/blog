@@ -2,7 +2,7 @@ import datetime
 from enum import Enum
 from flask_login import UserMixin
 from sqlalchemy.ext.mutable import MutableList
-
+from app.models.models import MyModel
 from app import db
 
 
@@ -11,20 +11,21 @@ class Status( Enum ):
     PUBLISHED = "PUBLISHED"
 
 
-class Category( UserMixin, db.Model ):
+class Category( MyModel ):
     __tablename__ = 'categories'
 
     id = db.Column( db.Integer, primary_key=True )
     name = db.Column( db.Text, nullable=False, unique=True )
-    active = db.Column( db.Boolean, default=False )
+    active = db.Column( db.Boolean, default=True )
     owner_id = db.Column( db.Integer, db.ForeignKey('users.id') )
     created_at = db.Column( db.DateTime, default=datetime.datetime.utcnow )
 
-    def __init__(self):
-        pass
+    def __init__(self, name, user_id):
+        self.name = name
+        self.owner_id = user_id
 
 
-class Blog( UserMixin, db.Model ):
+class Blog( MyModel ):
     __tablename__ = 'blogs'
 
     id = db.Column( db.Integer, primary_key=True )

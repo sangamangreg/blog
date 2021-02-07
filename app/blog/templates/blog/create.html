@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="POST">
+        {{blog_form.hidden_tag()}}
+
+        {{blog_form.title.label}} {{blog_form.title()}}<br />
+        {{blog_form.content.label}} {{blog_form.content()}}<br />
+        {{blog_form.featured_image_id.label}} {{blog_form.featured_image_id()}}<br />
+        {{blog_form.categories.label}} {{blog_form.categories()}}<br />
+
+        {{blog_form.submit()}}<br />
+    </form>
+
+</body>
+</html>
