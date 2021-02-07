@@ -10,8 +10,13 @@
 
     <form method="POST">
         {{register_form.hidden_tag()}}
-        {{register_form.email()}}
-        {{register_form.submit()}}
+        {{register_form.name.label}} {{register_form.name()}}<br />
+        {{register_form.username.label}} {{register_form.username()}}<br />
+        {{register_form.email.label}} {{register_form.email()}}<br />
+        {{register_form.phone.label}} {{register_form.phone()}}<br />
+        {{register_form.password.label}} {{register_form.password()}}<br />
+        {{register_form.confirm.label}} {{register_form.confirm()}}<br />
+        {{register_form.submit()}}<br />
     </form>
 </h1>
 
