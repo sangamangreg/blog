@@ -21,3 +21,8 @@ login_manager.init_app( app )
 login_manager.login_view = 'login'
 
 from app import models
+from app.auth.views import users
+from app.blog.views import blogs
+
+app.register_blueprint(users)
+app.register_blueprint(blogs)
