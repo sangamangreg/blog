@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
@@ -6,6 +7,13 @@ from flask_script import Manager
 from dbpath import DB_URI
 
 login_manager = LoginManager()
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+BLOG_UPLOAD_PATH = os.path.join('uploads', 'blog')
+BLOG_IMAGE_PATH = os.path.join(basedir, 'static', BLOG_UPLOAD_PATH)
+USER_IMAGE_PATH = os.path.join(basedir, 'static', 'uploads', 'user')
+
 app = Flask( __name__ )
 app.config['SECRET_KEY'] = 'mysecretkey'  # import from env on production
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI

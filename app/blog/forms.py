@@ -1,28 +1,31 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectMultipleField, HiddenField
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectMultipleField
 from wtforms.validators import DataRequired, length, ValidationError
-from app.models.blog import Category
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from app.models.blog import Category, Blog
+from app.utils import slug
 
-choices = [(category.id, category.name) for category in
+choices = [(str(category.id), category.name) for category in
            Category.query.filter_by( active=True ).order_by( Category.name.asc() ).all()]
-print( choices )
 
 
 class CreateBlogForm( FlaskForm ):
-    title = StringField( "Title", validators=[DataRequired(), length( min=24, max=255 )] )
+    title = StringField( "Title", validators=[DataRequired(), length( min=2, max=255 )] )
     content = TextAreaField( "Content", validators=[DataRequired()] )
-    featured_image_id = IntegerField( "Feature Image Id" )
+    featured_image = FileField( "Feature Image", validators=[FileRequired(), FileAllowed(['jpg', 'png'])] )
     categories = SelectMultipleField( "Select category", choices=choices )
     submit = SubmitField( "Create" )
 
     def validate_title(self, field):
-        pass
-
+        title_slug = slug(field.data)
+        blog = Blog.query.filter_by(slug=title_slug).first()
+        if blog:
+            raise ValidationError( "Blog with same title already exists" )
 
 class UpdateBlogForm( FlaskForm ):
-    title = StringField( "Title", validators=[DataRequired(), length( min=24, max=255 )] )
+    title = StringField( "Title", validators=[DataRequired(), length( min=2, max=255 )] )
     content = TextAreaField( "Content", validators=[DataRequired()] )
-    featured_image_id = IntegerField( "Feature Image Id" )
+    featured_image = FileField( "Feature Image", validators=[FileAllowed( ['jpg', 'png'] )] )
     categories = SelectMultipleField( "Select category", choices=choices )
     submit = SubmitField( "Update" )
 

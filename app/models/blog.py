@@ -4,6 +4,8 @@ from flask_login import UserMixin
 from sqlalchemy.ext.mutable import MutableList
 from app.models.models import MyModel
 from app import db
+from app.utils import slug
+
 
 
 class Status( Enum ):
@@ -33,7 +35,7 @@ class Blog( MyModel ):
     slug = db.Column( db.Text, unique=True )
     content = db.Column( db.Text, nullable=False )
     status = db.Column( db.Enum( Status ), default=Status.DRAFT )
-    active = db.Column( db.Boolean, default=False )
+    active = db.Column( db.Boolean, default=True )
     created_at = db.Column( db.DateTime, default=datetime.datetime.utcnow )
 
     # relations defined here
@@ -41,5 +43,10 @@ class Blog( MyModel ):
     owner_id = db.Column( db.Integer, db.ForeignKey( 'users.id' ) )
     featured_image_id = db.Column( db.Integer, db.ForeignKey( 'attachments.id' ) )
 
-    def __init__(self):
-        pass
+    def __init__(self, title, content, categories, owner_id, featured_image_id):
+        self.title = title
+        self.slug = slug(self.title)
+        self.content = content
+        self.categories = categories
+        self.owner_id = owner_id
+        self.featured_image_id = featured_image_id
